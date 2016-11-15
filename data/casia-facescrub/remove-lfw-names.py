@@ -1,24 +1,28 @@
-#!/usr/bin/env python2
 
-import os
-import shutil
+# Updated to handle CASIA's lack of name
 
-lfwDir = '../lfw/raw'
-lfwNames = os.listdir(lfwDir)
-lfwNames = [name.replace("_", "").lower() for name in lfwNames]
+from subprocess import call
+import sys
+from os import listdir
+from os.path import isfile, join
+import csv
 
-names = os.listdir('raw')
+lfwDir   = '/home/mbuckler/datasets/lfw/v0/'
+casiaDir = '/home/mbuckler/datasets/casia/CASIA-WebFace/'
+
+# Build a dictionary of Casia labels
+labels = {}
+with open('casia-labels.txt') as csvfile:
+  label_file = csv.reader(csvfile, delimiter=' ', quotechar='|')
+  for row in label_file:
+    labels[row[0]] = row[1]
+    
+lfwNames     = listdir(lfwDir)
+casiaNumbers = listdir(casiaDir)
+
+for number in casiaNumbers:
+  if labels[number] in lfwNames:
+    print 'Removing '+labels[number]
+    call('rm -rf '+casiaDir+number,shell=True)
 
 
-def inLfw(name):
-    name = name.strip().lower()
-    for lfwName in lfwNames:
-        if lfwName == name:
-            # print("(lfwName, name): ({}, {})".format(lfwName, name))
-            return True
-    return False
-
-for name in names:
-    if inLfw(name):
-        print('Deleting: {}'.format(name))
-        shutil.rmtree(os.path.join('raw', name))
