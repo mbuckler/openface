@@ -121,9 +121,13 @@ function saveModel(model)
     optnet.removeOptimization(model)
    end
    
-   torch.save(paths.concat(opt.save, 'model_' .. epoch .. '.t7'),  model:float():clearState())
-   torch.save(paths.concat(opt.save, 'optimState_' .. epoch .. '.t7'), optimState)
-  
+	 -- Only write 
+	 local save_step = 50
+	 if epoch % save_step == 0 then
+    torch.save(paths.concat(opt.save, 'model_' .. epoch .. '.t7'),  model:float():clearState())
+    torch.save(paths.concat(opt.save, 'optimState_' .. epoch .. '.t7'), optimState)
+   end
+
    if dpt then -- OOM without this
       dpt:clearState()
    end
