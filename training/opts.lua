@@ -42,7 +42,7 @@ function M.parse(arg)
    -- GPU memory usage depends on peoplePerBatch and imagesPerPerson.
    cmd:option('-peoplePerBatch', 15, 'Number of people to sample in each mini-batch.')
    cmd:option('-imagesPerPerson', 20, 'Number of images to sample per person in each mini-batch.')
-   cmd:option('-testing', true, 'Test with the LFW.')
+   cmd:option('-testing', false, 'Test with the LFW.')
    cmd:option('-testBatchSize', 800, 'Batch size for testing.')
    cmd:option('-lfwDir', '../data/lfw/aligned', 'LFW aligned image directory for testing.')
 
